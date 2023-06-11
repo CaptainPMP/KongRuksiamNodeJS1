@@ -21,4 +21,9 @@ router.get('/manage', (req, res) => {
     res.render('manage');
 })
 
+router.get('/insert', (req, res) => { //* .get() is to recieve GET method
+    console.log(req.query); //* req.query is where we contain sended data 
+    res.render('form');
+})
+
 module.exports = router;
