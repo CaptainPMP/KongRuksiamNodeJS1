@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+//* use product model
+const Product = require('../models/products')
 
 router.get('/', (req, res) => {
     const products = [
