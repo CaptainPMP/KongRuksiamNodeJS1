@@ -60,4 +60,14 @@ router.get('/:id', (req, res) => {
         .catch(err => console.error(err))
 })
 
+router.post("/edit", (req, res) => {
+    const edit_id = req.body.edit_id;
+    Product.findOne({ _id: edit_id })
+      .then((doc) => { 
+        //* use old data that we want to edit -> show in form
+        res.render('edit', {product:doc})
+      })
+      .catch((err) => console.error(err));
+});
+
 module.exports = router;
