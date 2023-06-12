@@ -28,7 +28,7 @@ router.get('/addForm', (req, res) => {
 })
 
 router.get('/manage', (req, res) => {
-    Product.find().then((doc) => res.render("manage", { products: doc }));
+    Product.find().then((doc) => res.render("manage", { products: doc })); //*Product.find is to bring data from MongoDB and response to js
 })
 
 router.post('/insert', upload.single("image"), async (req, res) => { //* .post() is to recieve GET method, "image" is from image field in form.ejs
