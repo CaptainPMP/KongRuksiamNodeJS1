@@ -23,9 +23,21 @@ router.get('/manage', (req, res) => {
     res.render('manage');
 })
 
-router.post('/insert', (req, res) => { //* .post() is to recieve GET method
-    console.log(req.body); //* req.body is where we contain sended data 
-    res.render('form');
+router.post('/insert', async (req, res) => { //* .post() is to recieve GET method
+    // console.log(req.body); //* req.body is where we contain sended data
+    let data = new Product({
+        name: req.body.name,
+        price: req.body.price,
+        image: req.body.image,
+        description: req.body.description
+    })
+    try {
+        Product.saveProduct(data);
+        res.redirect('/')
+    } catch (err) {
+        console.error(err);
+    }
+    // res.redirect('/');
 })
 
 module.exports = router;

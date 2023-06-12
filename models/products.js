@@ -21,3 +21,8 @@ let Product = mongoose.model("products", productSchema) //* products is a collec
 
 //* Export model
 module.exports = Product
+
+//* design method for save data
+module.exports.saveProduct = function(model, data) { //* module.exports.saveProduct is a function
+    model.save(data);
+}
