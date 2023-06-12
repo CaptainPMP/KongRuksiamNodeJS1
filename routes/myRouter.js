@@ -20,15 +20,7 @@ const upload = multer({
 })
 
 router.get('/', (req, res) => {
-    const products = [
-        { name: "โน๊ตบุ๊ค", price: 25000, image: "images/products/product1.png" },
-        { name: "เสื้อผ้า", price: 2000, image: "images/products/product2.png" },
-        { name: "หูฟัง", price: 30000, image: "images/products/product3.png" },
-        { name: "โน๊ตบุ๊ค", price: 25000, image: "images/products/product1.png" },
-        { name: "เสื้อผ้า", price: 2000, image: "images/products/product2.png" },
-        { name: "หูฟัง", price: 30000, image: "images/products/product3.png" }
-    ];
-    res.render('index', {products: products});
+    Product.find().then(doc => res.render('index', {products: doc}));
 })
 
 router.get('/addForm', (req, res) => {
@@ -36,7 +28,7 @@ router.get('/addForm', (req, res) => {
 })
 
 router.get('/manage', (req, res) => {
-    res.render('manage');
+    Product.find().then((doc) => res.render("manage", { products: doc }));
 })
 
 router.post('/insert', upload.single("image"), async (req, res) => { //* .post() is to recieve GET method, "image" is from image field in form.ejs
