@@ -70,4 +70,18 @@ router.post("/edit", (req, res) => {
       .catch((err) => console.error(err));
 });
 
+router.post("/update", upload.single("image"), async (req, res) => {
+    const update_id = req.body.update_id;
+    let data = {
+        name: req.body.name,
+        price: req.body.price,
+        description: req.body.description,
+    };
+    Product.findByIdAndUpdate(update_id, data, {useFindAndModify: false}) //* this is update in MongoDB function
+        .then(() => {
+            res.redirect('/manage');
+        })
+        .catch(err => console.error(err));
+});
+
 module.exports = router;
