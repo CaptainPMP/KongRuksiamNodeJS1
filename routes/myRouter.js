@@ -23,7 +23,7 @@ router.get('/', (req, res) => {
     Product.find().then(doc => res.render('index', {products: doc}));
 })
 
-router.get('/addForm', (req, res) => {
+router.get('/add-product', (req, res) => {
     res.render('form');
 })
 
@@ -32,7 +32,7 @@ router.get('/manage', (req, res) => {
 })
 
 router.get('/delete/:id', (req, res) => {
-        Product.findByIdAndDelete(req.params.id, {useFindAndModify:false})
+        Product.findByIdAndDelete(req.params.id, {useFindAndModify:false}) //* useFindAndModify is to ignore error
             .then(() => res.redirect('/manage'))
             .catch(err => console.error(err));
 })
@@ -51,6 +51,13 @@ router.post('/insert', upload.single("image"), async (req, res) => { //* .post()
     } catch (err) {
         console.error(err);
     }
+})
+
+router.get('/:id', (req, res) => {
+    const product_id = req.params.id;
+    Product.findOne({_id:product_id})
+        .then(doc => res.render('product', {product: doc}))
+        .catch(err => console.error(err))
 })
 
 module.exports = router;
