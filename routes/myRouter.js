@@ -31,6 +31,12 @@ router.get('/manage', (req, res) => {
     Product.find().then((doc) => res.render("manage", { products: doc })); //*Product.find is to bring data from MongoDB and response to js
 })
 
+router.get('/delete/:id', (req, res) => {
+        Product.findByIdAndDelete(req.params.id, {useFindAndModify:false})
+            .then(() => res.redirect('/manage'))
+            .catch(err => console.error(err));
+})
+
 router.post('/insert', upload.single("image"), async (req, res) => { //* .post() is to recieve GET method, "image" is from image field in form.ejs
     // console.log(req.body); //* req.body is where we contain sended data
     let data = new Product({
