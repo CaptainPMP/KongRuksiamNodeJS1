@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 })
 
 router.get('/add-product', (req, res) => {
-    if(req.cookies.login){
+    if(req.session.login){
         res.render('form'); //* save product to DB
     } else {
         res.render('admin') //* login
@@ -32,7 +32,7 @@ router.get('/add-product', (req, res) => {
 })
 
 router.get('/manage', (req, res) => {
-    if(req.cookies.login){
+    if(req.session.login){
         Product.find().then((doc) => res.render("manage", { products: doc })); //*Product.find is to bring data from MongoDB and response to js
     } else{
         res.render('admin');
@@ -46,10 +46,7 @@ router.get('/delete/:id', (req, res) => {
 })
 
 router.get("/logout", (req, res) => {
-    res.clearCookie("username");
-    res.clearCookie("password");
-    res.clearCookie("login");
-    res.redirect("/manage");
+    req.session.destroy((err) => res.redirect("/manage"));
 });
 
 router.post('/insert', upload.single("image"), async (req, res) => { //* .post() is to recieve GET method, "image" is from image field in form.ejs
@@ -102,13 +99,14 @@ router.post("/update", upload.single("image"), async (req, res) => {
 router.post('/login', (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    const timeExpire = 1000 * 30;
+    const timeExpire = 1000 * 30; //30 seconds
 
     if(username === "admin" && password == "123"){
-        //* make cookie
-        res.cookie('username', username, {maxAge:timeExpire})
-        res.cookie('password', password, {maxAge:timeExpire})
-        res.cookie('login', true, {maxAge:timeExpire}) //* true => login 
+        //* make session
+        req.session.username = username;
+        req.session.password = password;
+        req.session.login = true;
+        req.session.cookie.maxAge = timeExpire;
         res.redirect('/manage')
     } else {
         res.status(404)
